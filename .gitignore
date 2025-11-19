@@ -1,5 +1,6 @@
 videos/*
 !videos/.gitkeep
 !videos/download-video.sh
-
+!videos/mp4-to-hls.sh
+node_modules/
 

@@ -1,0 +1,1 @@
+mkdir video-chunk && ffmpeg -i be_human_1936.mp4 -c:v libx264 -pix_fmt yuv420p -preset veryfast -crf 23 -c:a aac -ar 44100 -ac 2 -f hls -hls_time 10 -hls_playlist_type vod -hls_segment_filename "video-chunk/video%03d.ts" video-chunk/index.m3u8
