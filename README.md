@@ -37,24 +37,21 @@ npm install
 
 ## 🎬 Preparando o Vídeo
 
-O projeto precisa de um arquivo de vídeo convertido para HLS. Crie uma pasta chamada `videos` na raiz e use o FFmpeg.
+1. Você deve dar a permissão para executar os arquivos download-video.sh e mp4-to-hls.sh caso esteja no linux e executá-los
 
-1.  Coloque um arquivo `input.mp4` na raiz do projeto.
-2.  Execute o comando abaixo para gerar os segmentos:
+2. caso não queria executar os arquivos rode:
+```
+# entra no diretório de vídeos
+$ cd videos
 
-```bash
-mkdir -p videos/meu-video
+# baixa um arquivo de domínio público, caso queria pode usar qualquer outro arquivo de vídeo
+$ wget https://archive.org/download/bb_be_human/bb_be_human_512kb.mp4 -O be_human_1936.mp4
 
-ffmpeg -i input.mp4 \
-  -profile:v baseline \
-  -level 3.0 \
-  -start_number 0 \
-  -hls_time 10 \
-  -hls_list_size 0 \
-  -f hls videos/meu-video/playlist.m3u8
+# cria a pasta video-chunk onde vão ficar os arquivos convertidos e converte o vídeo no formato ideal para ser mandado via o protocolo HLS (HTTPS Live Server)
+$ mkdir video-chunk && ffmpeg -i be_human_1936.mp4 -c:v libx264 -pix_fmt yuv420p -preset veryfast -crf 23 -c:a aac -ar 44100 -ac 2 -f hls -hls_time 10 -hls_playlist_type vod -hls_segment_filename "video-chunk/video%03d.ts" video-chunk/index.m3u8
 ```
 
-Isso criará a playlist (`.m3u8`) e os fragmentos (`.ts`) dentro de `videos/meu-video/`.
+Isso criará a playlist (`.m3u8`) e os fragmentos (`.ts`) dentro de `videos`.
 
 ---
 
